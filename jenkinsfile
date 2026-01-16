@@ -1,22 +1,18 @@
 pipeline {
     agent any
-
     stages {
         stage('Clone') {
             steps {
-                // Jenkins pulls the latest code from GitHub
-                checkout scm
+                // We use the ID you created ('github-auth-manual') directly in the code
+                git credentialsId: 'github-auth-manual', 
+                    url: 'https://github.com/YOUR_USERNAME/my-node-app.git', 
+                    branch: 'main'
             }
         }
-        stage('Docker Build') {
+        stage('Build & Deploy') {
             steps {
                 sh 'docker build -t my-node-app .'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh 'docker stop node-app || true'
-                sh 'docker rm node-app || true'
+                sh 'docker stop node-app || true && docker rm node-app || true'
                 sh 'docker run -d -p 4000:3000 --name node-app my-node-app'
             }
         }
