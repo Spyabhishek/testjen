@@ -4,9 +4,9 @@ pipeline {
         stage('Clone') {
             steps {
                 // We use the ID you created ('github-auth-manual') directly in the code
-                git credentialsId: 'github-auth-manual', 
-                    url: 'https://github.com/YOUR_USERNAME/my-node-app.git', 
-                    branch: 'main'
+                git credentialsId: 'github_auth', 
+                    url: 'https://github.com/Spyabhishek/testjen', 
+                    branch: 'master'
             }
         }
         stage('Build & Deploy') {
