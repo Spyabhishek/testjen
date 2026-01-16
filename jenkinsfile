@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone') {
+            steps {
+                // Jenkins pulls the latest code from GitHub
+                checkout scm
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t my-node-app .'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker stop node-app || true'
+                sh 'docker rm node-app || true'
+                sh 'docker run -d -p 4000:3000 --name node-app my-node-app'
+            }
+        }
+    }
+}
